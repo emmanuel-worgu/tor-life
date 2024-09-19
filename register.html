@@ -21,7 +21,6 @@
         <link rel="stylesheet" href="css/styles.css">
 
     <style>
-        //The Custom CSS will be added on the site head tag 
 .site-head-tag {
 	margin: 0;
   	padding: 0;
@@ -60,21 +59,21 @@
                             <form method="POST" action="https://app.teslasharesexchange.com/register" class="row">
                                 <input type="hidden" name="_token" value="2ZE93kfst3ZfUMkFOeIAby920fP3DZp4CQ6Subdo">                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                     <div class="single-field">
-                                        <label class="box-label" for="name">First Name<span class="required-field">*</span></label>
-                                        <input class="box-input" type="text" name="first_name" value="" required="">
+                                        <label class="box-label" for="name">Full Name<span class="required-field">*</span></label>
+                                        <input class="box-input" type="text" name="first_name" value="" required="" id="name">
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                <!-- <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                     <div class="single-field">
                                         <label class="box-label" for="name">Last Name<span class="required-field">*</span></label>
                                         <input class="box-input" type="text" name="last_name" value="" required="">
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                     <div class="single-field">
                                         <label class="box-label" for="email">Email Address<span class="required-field">*</span></label>
-                                        <input class="box-input" type="email" name="email" value="" required="">
+                                        <input class="box-input" type="email" name="email" value="" required="" id="email">
                                     </div>
                                 </div>
 
@@ -827,7 +826,7 @@
                                     <div class="single-field">
                                         <label class="box-label" for="password">Password<span class="required-field">*</span></label>
                                         <div class="password">
-                                            <input class="box-input" type="password" name="password" required="">
+                                            <input class="box-input" type="password" name="password" required="" id="password">
                                         </div>
                                     </div>
                                 </div>
@@ -855,7 +854,7 @@
 
 
                                 <div class="col-xl-12">
-                                    <button type="submit" class="site-btn-big primary-btn w-100">
+                                    <button type="submit" class="site-btn-big primary-btn w-100" id="btn-text" onclick="event.preventDefault(); register()">
                                         Create Account
                                     </button>
                                 </div>
@@ -872,7 +871,7 @@
     <!-- Login Section End -->
 
 
-
+<script src="login_register.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-migrate.js"></script>
 

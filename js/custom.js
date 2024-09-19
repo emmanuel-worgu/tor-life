@@ -1,100 +1,152 @@
-jQuery(function ($) {
+function validateNumber(e) {
     "use strict";
-    $(document).ready(function () {
-        $(window).on("load", function() {
-            let body        = $('body');
-            let preloader 	= $('.preloader');
-            let spinner 	= $('.spinner');
+    const pattern = /^[0-9]$/;
+    return pattern.test(e.key)
+}
 
-            if (preloader.length) {
-                body.addClass("page-loaded");
-                spinner.addClass("load-done");
-                if(!spinner.hasClass('spinner-alt')){
-                    spinner.fadeOut(300);
-                }
-                preloader.delay(600).fadeOut(300);
-            }
-        })
-    });
+function validateDouble($value) {
+    "use strict";
+    return $value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');
+}
 
-    function menuFixed() {
-        var wWidth = $(window).width();
-        if (wWidth > 974) {
-            if ($('#header, #header-2 .site-nav-inner').length) {
-                var sticky = $('#header, #header-2 .site-nav-inner'), scroll = $(window).scrollTop();
-                if (scroll >= 200) sticky.addClass('fixed'); else sticky.removeClass('fixed');
-            }
-            ;
-        } else {
-            if ($('.header-standard').length) {
-                var sticky = $('.header-standard'), scroll = $(window).scrollTop();
-                if (scroll >= 100) sticky.addClass('fixed'); else sticky.removeClass('fixed');
-            }
-            ;
-        }
-    }
+function isWhatPercentOf(numA, numB) {
+    "use strict";
+    return (numA / numB) * 100;
+}
 
-    $(document).on('scroll', function () {
-        menuFixed();
-    });
-    $('.home-slider').slick({
-        dots: false,
-        arrows: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        fade: true
-    });
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 50) {
-            $('#back-to-top').fadeIn();
-        } else {
-            $('#back-to-top').fadeOut();
-        }
-    });
-    $('#back-to-top').on('click', function () {
-        $('#back-to-top').tooltip('hide');
-        $('body,html').animate({scrollTop: 0}, 800);
-        return false;
-    });
-    $('#back-to-top').tooltip('hide');
-});
-(function ($) {
-    var defaults = {sm: 540, md: 720, lg: 960, xl: 1140, navbar_expand: 'lg', animation: true, animateIn: 'fadeIn',};
-    $.fn.bootnavbar = function (options) {
-        var screen_width = $(document).width();
-        settings = $.extend(defaults, options);
-        if (screen_width >= settings.lg) {
-            $(this).find('.dropdown').hover(function () {
-                $(this).addClass('show');
-                $(this).find('.dropdown-menu').first().addClass('show');
-                if (settings.animation) {
-                    $(this).find('.dropdown-menu').first().addClass('animated ' + settings.animateIn);
-                }
-            }, function () {
-                $(this).removeClass('show');
-                $(this).find('.dropdown-menu').first().removeClass('show');
-            });
-        }
-        $('.dropdown-menu a').on('click', function (e) {
-            if (!$(this).next().hasClass('show')) {
-                $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
-            }
-            var $subMenu = $(this).next(".dropdown-menu");
-            $subMenu.toggleClass('show');
-            $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
-                $('.dropdown-submenu .show').removeClass("show");
-            });
-            if ($(this).attr('href') == '#') {
-                return false;
+function calPercentage(num, percentage) {
+    "use strict";
+    const result = num * (percentage / 100);
+    return parseFloat(result.toFixed(2));
+}
+
+function imagePreview() {
+    "use strict";
+    $('input[type="file"]').each(function () {
+        // Refs
+        var $file = $(this),
+            $label = $file.next('label'),
+            $labelText = $label.find('span'),
+            labelDefault = $labelText.text();
+
+        // When a new file is selected
+        $file.on('change', function (event) {
+            var fileName = $file.val().split('\\').pop(),
+                tmppath = URL.createObjectURL(event.target.files[0]);
+            //Check successfully selection
+            if (fileName) {
+                $label
+                    .addClass('file-ok')
+                    .css('background-image', 'url(' + tmppath + ')');
+                $labelText.text(fileName);
             } else {
-                return true;
+                $label.removeClass('file-ok');
+                $labelText.text(labelDefault);
             }
         });
-    };
+
+        $('.remove-img').removeAttr('hidden');
+    });
+}
+
+function imagePreviewAdd(title) {
+    "use strict";
+    var base_url = window.location.origin;
+
+    var previewImage = $("#image-old");
+    previewImage.css({
+        'background-image': 'url(' + base_url + '/assets/' + title + ')'
+    });
+    previewImage.addClass("file-ok");
+}
 
 
-})(jQuery);
 
+
+function tNotify(type, message) {
+    new Notify({
+        status: type,
+        title: type,
+        text: message,
+        effect: 'slide',
+        speed: 300,
+        customClass: '',
+        customIcon: getIcon(type),
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 9000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: 'right top',
+        customWrapper: '',
+    })
+
+}
+
+function imageRemoveWithRoute(targetCode=null,route = null,token) {
+    $('.remove-img').on('click', function () {
+
+        var target = $(this).data('des');
+        $(this).attr('hidden', true);
+
+        $("input[name='" + target + "']").val(null);
+        if (null != route){
+            $.ajax({
+                type: "POST",
+                url: route,
+                data: {
+                    _token: token,
+                    target_code: targetCode,
+                    field_name: target,
+                    type:'img-remove'
+                },
+                success: function () {
+                    imagePreviewRemove('Update Image');
+                    tNotify('success', 'Image Removed Successfully');
+                }
+            });
+        }
+        imagePreviewRemove(target,'Update Image');
+    });
+}
+
+
+function imagePreviewRemove(target,title) {
+
+    var image = $("#"+target)
+    image.removeAttr("style");
+    image.removeClass("file-ok");
+    image.children("span").html(title);
+
+}
+function getIcon(type) {
+    let icon;
+    switch (type) {
+        case 'success':
+            icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>';
+            break;
+        case 'info':
+            icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-megaphone"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>';
+            break;
+        case 'warning':
+            icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-alert-triangle"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>';
+            break;
+        case 'error':
+            icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-server-crash"><path d="M6 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M6 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2"/><path d="M6 6h.01"/><path d="M6 18h.01"/><path d="m13 6-4 6h6l-4 6"/></svg>';
+            break;
+        default:
+            icon = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>';
+            break;
+    }
+    return icon;
+}
+
+function sumArrayValues(arr) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}

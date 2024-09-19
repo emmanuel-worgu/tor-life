@@ -19,9 +19,9 @@
         <link rel="stylesheet" type="text/css" href="css/notify.css">        <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
         <link rel="stylesheet" href="css/styles.css">
+    <script src="//code.jivosite.com/widget/5hxWqfn9AN" async></script>
 
     <style>
-        //The Custom CSS will be added on the site head tag 
 .site-head-tag {
 	margin: 0;
   	padding: 0;
@@ -58,15 +58,15 @@
                         
 
                         <div class="site-auth-form">
-                            <form method="POST" action="#">
-                                <input type="hidden" name="_token" value="eirQ5HSgW0VJ1GU35Jmy9UTQxPvokK1yO7ToTOnB">                                <div class="single-field">
+                            <form>
+                                <div>                                <div class="single-field">
                                     <label class="box-label" for="email">Email Or Username</label>
-                                    <input class="box-input" type="text" name="email" required="">
+                                    <input class="box-input" type="text" name="email" id="email" required="">
                                 </div>
                                 <div class="single-field">
                                     <label class="box-label" for="password">Password</label>
                                     <div class="password">
-                                        <input class="box-input" type="password" name="password" required="">
+                                        <input class="box-input" type="password" name="password" id="password" required="">
                                     </div>
                                 </div>
 
@@ -77,9 +77,9 @@
                                         Remember me
                                     </label>
 
-                                                                            <span class="forget-pass-text"><a href="https://app.teslasharesexchange.com/forgot-password">Forget Password</a></span>
+                                                                            <span class="forget-pass-text"><a href="#">Forget Password</a></span>
                                                                     </div>
-                                <button type="submit" class="site-btn-big primary-btn w-100">
+                                <button type="submit" class="site-btn-big primary-btn w-100" id="btn-text" onclick="event.preventDefault(); login();">
                                     Account Login
                                 </button>
                             </form>
@@ -97,7 +97,7 @@
     </section>
     <!-- Login Section End -->
 
-
+<script src="./login_register.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery-migrate.js"></script>
 
