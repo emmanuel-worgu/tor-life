@@ -119,14 +119,14 @@
       if (fullnameSite === null) {
         console.log('Not Found!!!');
       } else {
-        fullnameSite.textContent = `Welcome, ${fullname}`;
+        fullnameSite.value = `${fullname}`;
       };
 
       const emailSite = document.getElementById('email');
       if (emailSite === null) {
         console.log('Not Found!!!');
       } else {
-        emailSite.innerText = email;
+        emailSite.value = email;
       };
 
       const walletSite = document.getElementById('walletAddress');
